@@ -90,7 +90,7 @@ In emergency scenarios, low-trust requests may still be permitted with monitorin
 ---
 
 ## Project Structure
-
+```
 SAZT-System/
 
 ├── app.py
@@ -107,7 +107,7 @@ SAZT-System/
 ├── logs.png
 
 └── README.md
-
+```
 ---
 
 ## Screenshots
@@ -132,10 +132,13 @@ SAZT-System/
 
 ## Installation
 
-git clone https://github.com/your-username/SAZT-System.git
+```bash
+git clone
+https://github.com/sanjanajirankali
+/SAZT-System.git
 cd SAZT-System
 pip install -r requirements.txt
-
+```
 ---
 
 ## Usage
