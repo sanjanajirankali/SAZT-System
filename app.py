@@ -2,9 +2,7 @@ import streamlit as st
 from trust_engine import run
 import pandas as pd
 
-# -------------------------------
-# HIDE STREAMLIT DEFAULT UI
-# -------------------------------
+# Hide UI
 hide_style = """
 <style>
 #MainMenu {visibility: hidden;}
@@ -14,34 +12,21 @@ header {visibility: hidden;}
 """
 st.markdown(hide_style, unsafe_allow_html=True)
 
-# -------------------------------
-# PAGE CONFIG
-# -------------------------------
 st.set_page_config(page_title="SAZT System", layout="centered")
 
-# -------------------------------
-# HEADER
-# -------------------------------
+# Header
 col1, col2 = st.columns([2, 5])
 
 with col1:
-    st.image("logo.png", width=300)
+    st.image("logo.png", width=250)
 
 with col2:
-    st.markdown(
-        "<h1 style='margin-bottom:0;'>Situational-Aware Zero Trust</h1>",
-        unsafe_allow_html=True
-    )
-    st.markdown(
-        "<p style='color:gray; margin-top:0;'>Adaptive access control for healthcare systems</p>",
-        unsafe_allow_html=True
-    )
+    st.markdown("<h1>Situational-Aware Zero Trust</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='color:gray;'>Adaptive access control for healthcare systems</p>", unsafe_allow_html=True)
 
 st.markdown("---")
 
-# -------------------------------
-# INPUT PANEL
-# -------------------------------
+# Inputs
 st.subheader("Access Request Configuration")
 
 col1, col2 = st.columns(2)
@@ -58,12 +43,8 @@ context_val = 1 if context == "Emergency" else 0
 
 st.markdown("---")
 
-# -------------------------------
-# RUN BUTTON
-# -------------------------------
 if st.button("Evaluate Access"):
 
-    # Create input dataframe
     df = pd.DataFrame([{
         "user_role": role,
         "context": context_val,
@@ -71,76 +52,57 @@ if st.button("Evaluate Access"):
         "resource_sensitivity": sensitivity
     }])
 
-    # Run trust engine
     df = run(df)
     row = df.iloc[0]
 
-    # -------------------------------
-    # METRICS
-    # -------------------------------
     st.subheader("System Output")
 
     col1, col2, col3 = st.columns(3)
-
     col1.metric("Trust Score", f"{row['trust_score']:.2f}")
     col2.metric("Risk Level", row["risk_level"])
     col3.metric("Policy Mode", row["policy_mode"])
 
     st.markdown("---")
 
-    # -------------------------------
-    # VISUAL DECISION
-    # -------------------------------
     st.subheader("System Decision")
 
-    if row["decision"] == "ALLOW_FAST":
-        st.success("⚡ Access Granted Instantly")
-    elif row["decision"] == "AUTH_REQUIRED":
-        st.warning("🔐 Additional Authentication Required")
+    # 🔥 NEW FEATURE HERE
+    if context == "Emergency" and row["trust_score"] < 0.4:
+        st.warning("⚠️ Emergency Override Activated – Access Allowed with Monitoring")
     else:
-        st.error("🚫 Access Blocked - Threat Detected")
+        if row["decision"] == "ALLOW_FAST":
+            st.success("⚡ Access Granted Instantly")
+        elif row["decision"] == "AUTH_REQUIRED":
+            st.warning("🔐 Additional Authentication Required")
+        else:
+            st.error("🚫 Access Blocked - Threat Detected")
 
     st.markdown("---")
 
-    # -------------------------------
-    # EXPLANATION
-    # -------------------------------
     st.subheader("Decision Explanation")
 
     st.write(f"""
-    - Role: {role}
-    - Context: {context}
-    - Behavior Score: {behavior}
-    - Resource Sensitivity: {sensitivity}
-
     ➡ Trust Score: {row['trust_score']:.2f}  
     ➡ Risk Level: {row['risk_level']}  
     ➡ Policy Mode: {row['policy_mode']}  
-    ➡ Final Decision: {row['decision']}
+    ➡ Decision: {row['decision']}  
+
+    🧠 {row['explanation']}
     """)
 
     st.markdown("---")
 
-    # -------------------------------
-    # LIVE SYSTEM LOG
-    # -------------------------------
     st.subheader("Live System Log")
 
     st.code(f"""
-[INFO] Incoming access request
+[INFO] Incoming request
 [INFO] Role: {role}
 [INFO] Context: {context}
-[INFO] Behavior Score: {behavior}
-[INFO] Resource Sensitivity: {sensitivity}
 
-[INFO] Calculating trust score...
 [INFO] Trust Score: {row['trust_score']:.2f}
-
-[INFO] Applying policy engine...
 [INFO] Decision: {row['decision']}
+
+[INFO] Emergency Override: {"YES" if context == "Emergency" and row["trust_score"] < 0.4 else "NO"}
 """)
 
-# -------------------------------
-# FOOTER
-# -------------------------------
 st.caption("Prototype system for adaptive zero trust decision-making")

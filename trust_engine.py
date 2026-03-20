@@ -110,23 +110,41 @@ def _add_explanation(df):
     def explain(row):
         reasons = []
 
+        # Context analysis
         if row["context"] == 1:
-            reasons.append("Emergency context")
+            reasons.append("Emergency situation detected")
         else:
-            reasons.append("Normal context")
+            reasons.append("Normal access context")
 
-        if row["behavior_score"] < 0.4:
-            reasons.append("Suspicious behavior")
+        # Behavior analysis
+        if row["behavior_score"] < 0.3:
+            reasons.append("Highly suspicious user behavior")
+        elif row["behavior_score"] < 0.5:
+            reasons.append("Moderately risky behavior")
         else:
-            reasons.append("Normal behavior")
+            reasons.append("Stable user behavior")
 
-        if row["resource_sensitivity"] > 0.75:
-            reasons.append("High sensitivity resource")
+        # Resource sensitivity
+        if row["resource_sensitivity"] > 0.8:
+            reasons.append("Accessing critical resource")
+        elif row["resource_sensitivity"] > 0.6:
+            reasons.append("Accessing sensitive resource")
 
+        # Role-based trust
         if row["user_role"] == "doctor":
-            reasons.append("Trusted doctor role")
+            reasons.append("High-trust medical role")
+        elif row["user_role"] == "nurse":
+            reasons.append("Moderate-trust clinical role")
         elif row["user_role"] == "admin":
-            reasons.append("Lower trust admin role")
+            reasons.append("Lower-trust administrative role")
+
+        # Final trust interpretation (🔥 THIS IS THE KEY UPGRADE)
+        if row["trust_score"] > 0.7:
+            reasons.append("Overall trust level is high")
+        elif row["trust_score"] > 0.4:
+            reasons.append("Moderate trust — additional verification required")
+        else:
+            reasons.append("Low trust — access restricted")
 
         return " | ".join(reasons)
 
