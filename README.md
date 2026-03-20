@@ -44,9 +44,38 @@ Based on this score, access is:
 - Allowed with authentication
 - Blocked
 
+## System Modes
+
+- **Automated Mode**: Runs complete SAZT pipeline using synthetic dataset (`main.py`)
+- **Interactive Mode**: Allows manual simulation via UI (`app.py`)
+
 ## How to Run
 
 ### Run Automatic System
 
 ```bash
 python main.py
+
+### Run Interactive UI
+
+```bash
+streamlit run app.py
+
+### Run Interactive UI
+
+```bash
+streamlit run app.py
+
+## Screenshots
+
+### User Interface
+![UI](ui.png)
+
+### System Execution (Terminal)
+![Terminal](terminal.png)
+
+### Performance Visualization
+![Charts](charts.png)
+
+### Live Security Stream
+![Logs](logs.png)
