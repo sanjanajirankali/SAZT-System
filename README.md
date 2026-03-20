@@ -120,13 +120,13 @@ SAZT-System/
 
 ![Terminal](terminal.png)
 
-### Performance Visualization
-
-![Charts](charts.png)
-
 ### Live Security Logs
 
 ![Logs](logs.png)
+
+### Performance Visualization
+
+![Charts](charts.png)
 
 ---
 
