@@ -1,6 +1,6 @@
 # Situational-Aware Zero Trust (SAZT)
 
-🚀 A hybrid automated + interactive Zero Trust system for real-time healthcare access control.
+A hybrid automated + interactive Zero Trust system for real-time healthcare access control.
 
 ## Overview
 
