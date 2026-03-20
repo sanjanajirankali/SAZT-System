@@ -1,91 +1,194 @@
 # Situational-Aware Zero Trust (SAZT)
 
-A hybrid automated + interactive Zero Trust system for real-time healthcare access control.
+A dynamic Zero Trust system that evaluates access requests using real-time context, user behavior, and resource sensitivity, designed for healthcare environments.
+
+---
 
 ## Overview
 
-Traditional access control systems are static and fail to adapt to real-time clinical urgency.
-This project introduces a **Situational-Aware Zero Trust (SAZT)** model that dynamically evaluates access requests based on multiple factors.
+Traditional access control systems are static and fail to adapt to time-critical environments such as healthcare.
+
+This project introduces Situational-Aware Zero Trust (SAZT), a context-aware security model that dynamically computes trust for each access request and adjusts decisions in real time.
+
+---
 
 ## Key Features
 
-* Dynamic Trust Scoring
-* Context-Aware Access (Emergency vs Normal)
-* Behavioral Risk Analysis
-* Policy-Based Decision Engine
-* Explainable Security Decisions
-* Interactive Web Interface (Streamlit)
+* Dynamic trust score computation
+* Context-aware access control (Emergency vs Normal)
+* Behavioral risk analysis with anomaly detection
+* Policy-based decision engine
+* Explainable decision outputs
+* Interactive web interface using Streamlit
+* Real-time logging (CLI and UI)
+* Attack simulation module
+* Interactive demo mode for testing scenarios
 
-## System Architecture
-
-The system consists of two layers:
-
-### 1. Core Engine (Automatic)
-
-* Dataset-driven simulation
-* Trust score computation
-* Decision generation
-* Attack detection
-
-### 2. Interactive UI
-
-* Real-time simulation tool
-* User-controlled testing interface
+---
 
 ## How It Works
 
-The system calculates a **Trust Score** using:
+The system computes a trust score using:
 
-* User Role
-* Behavior Score
-* Context (Emergency / Normal)
-* Resource Sensitivity
+* Context (Emergency or Normal)
+* Behavior score
+* User role weight
+* Resource sensitivity
 
-Based on this score, access is:
+Trust Score =
+0.4 × Context +
+0.3 × Behavior +
+0.2 × Role +
+0.1 × (1 - Sensitivity)
 
-* Allowed instantly
-* Allowed with authentication
-* Blocked
+If anomalous behavior is detected, a penalty is applied to reduce the trust score.
 
-## System Modes
+---
 
-* **Automated Mode**: Runs complete SAZT pipeline using synthetic dataset (`main.py`)
-* **Interactive Mode**: Allows manual simulation via UI (`app.py`)
+## Decision Logic
 
-## How to Run
+| Trust Score | Decision                |
+| ----------- | ----------------------- |
+| > 0.7       | Allow                   |
+| 0.4 – 0.7   | Authentication Required |
+| < 0.4       | Block                   |
 
-### Run Automatic System
+---
 
-```bash
-python main.py
-```
+## Emergency Override
 
-### Run Interactive UI
+In emergency scenarios, low-trust requests may still be permitted with monitoring enabled. This ensures that security controls do not delay critical medical actions while maintaining auditability.
 
-```bash
-python -m streamlit run app.py
-```
+---
 
-## Output
+## System Architecture
 
-* CSV file containing evaluated access decisions
-* Graphical performance comparison (SAZT vs Static)
-* Real-time decision logs
+### Core Engine
+
+* Synthetic dataset generation
+* Trust score computation
+* Decision and risk classification
+* Latency comparison
+* Explanation generation
+
+### Interactive UI
+
+* Manual simulation of access requests
+* Real-time evaluation and decision output
+* Emergency override handling
+* Live logging
+
+### CLI Execution
+
+* Full pipeline execution
+* Dataset processing
+* Summary and sample output
+* Attack simulation
+* Live security logs
+* Interactive demo mode
+
+---
+
+## Project Structure
+
+SAZT-System/
+
+├── app.py
+├── main.py
+├── trust_engine.py
+├── dataset_generator.py
+├── attack_simulator.py
+├── visualization.py
+├── requirements.txt
+
+├── ui.png
+├── terminal.png
+├── charts.png
+├── logs.png
+
+└── README.md
+
+---
 
 ## Screenshots
 
 ### User Interface
+
 ![UI](ui.png)
 
 ### System Execution (Terminal)
+
 ![Terminal](terminal.png)
 
 ### Performance Visualization
+
 ![Charts](charts.png)
 
-### Live Security Stream
+### Live Security Logs
+
 ![Logs](logs.png)
 
-## Insight
+---
 
-This project demonstrates a hybrid security model combining automated trust evaluation with interactive simulation for improved explainability and real-world adaptability.
+## Installation
+
+git clone https://github.com/your-username/SAZT-System.git
+cd SAZT-System
+pip install -r requirements.txt
+
+---
+
+## Usage
+
+### Run the automated system
+
+python main.py
+
+### Run the interactive interface
+
+python -m streamlit run app.py
+
+---
+
+## Output
+
+* Evaluated dataset (sazt_output.csv)
+* Performance comparison charts
+* Real-time logs
+* Decision explanations
+
+---
+
+## Attack Simulation
+
+The system includes a predefined attack scenario involving:
+
+* Administrative user
+* Low behavior score
+* High sensitivity resource
+
+The system evaluates the request and blocks access when risk is detected.
+
+---
+
+## Demo Mode
+
+The CLI includes an interactive demo mode that allows:
+
+* Selection of policy modes (Strict, Balanced, Emergency-first)
+* Simulation of different access scenarios
+* Custom input testing
+
+---
+
+## Conclusion
+
+SAZT demonstrates how adaptive, context-aware Zero Trust models can improve both security and usability in critical environments.
+
+It highlights the importance of dynamic trust evaluation, explainable decisions, and real-time adaptability in modern access control systems.
+
+---
+
+## Author
+
+Cybersecurity project focused on adaptive Zero Trust architectures.
