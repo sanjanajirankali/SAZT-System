@@ -75,19 +75,15 @@ python -m streamlit run app.py
 ## Screenshots
 
 ### User Interface
-
 ![UI](ui.png)
 
 ### System Execution (Terminal)
-
 ![Terminal](terminal.png)
 
 ### Performance Visualization
-
 ![Charts](charts.png)
 
 ### Live Security Stream
-
 ![Logs](logs.png)
 
 ## Insight
